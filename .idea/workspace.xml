@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bc9d294-c180-4b99-8498-33e4616544a6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/news/views.py" afterPath="$PROJECT_DIR$/news/views.py" />
-      <change beforePath="$PROJECT_DIR$/news_land/settings.py" afterPath="$PROJECT_DIR$/news_land/settings.py" />
-      <change beforePath="$PROJECT_DIR$/news_land/urls.py" afterPath="$PROJECT_DIR$/news_land/urls.py" />
+      <change beforePath="$PROJECT_DIR$/news/templates/base/main.html" afterPath="$PROJECT_DIR$/news/templates/base/main.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -82,9 +80,11 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/news/templates/base/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" column="29" lean-forward="false" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-              <folding />
+            <state relative-caret-position="131">
+              <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+              <folding>
+                <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -116,9 +116,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-5" />
-    <option name="y" value="7" />
-    <option name="width" value="1386" />
+    <option name="x" value="-397" />
+    <option name="width" value="1046" />
     <option name="height" value="788" />
   </component>
   <component name="ProjectView">
@@ -289,9 +288,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/news/templates/base/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="3" column="29" lean-forward="false" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-          <folding />
+        <state relative-caret-position="131">
+          <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+          <folding>
+            <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
