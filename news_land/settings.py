@@ -69,7 +69,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'news_land.wsgi.application'
-
+TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -106,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -119,3 +120,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+

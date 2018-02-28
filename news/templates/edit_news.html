@@ -1,0 +1,11 @@
+{% extends 'base/main.html' %}
+{% block news %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+    {{ form.as_table }}
+        </table>
+    <input type="submit" value="Сохранить" />
+</form>
+{% endblock %}
