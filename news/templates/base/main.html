@@ -38,13 +38,15 @@
     <div class="row">
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
-            {% block category %}
+                {% block category %}
 
-            {% endblock %}
+                {% endblock %}
             </ul>
         </div>
         <div class="col-md-8">
+            {% block text %}
 
+            {% endblock %}
             {% block news%}
             {% endblock%}
         </div>

@@ -98,12 +98,16 @@ class authors_list_Views(ListView,category_list):
         try:
             self.author_name = self.args[0]
         except:
-            print('НИХУЯ БРАТАН')
-            self.author_name = 'Maksimova_Marina'
+            self.author_name = None
         return super(authors_list_Views,self).get(request,*args,**kwargs)
 
+    def get_context_data(self,**kwargs):
+        context = super(authors_list_Views,self).get_context_data(**kwargs)
+        context['author_name'] = self.author_name
+        return context
+
     def get_queryset(self):
-        return Newsbase.objects.filter(news_authors = self.author_name)
+        return Newsbase.objects.filter(news_authors = self.author_name).order_by('-news_date')
 
 
 

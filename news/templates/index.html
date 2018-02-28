@@ -3,6 +3,7 @@
 
 {% block title %} {{ title }} {% endblock %}
 
+
 {% block category %}
     {% if  category  %}
         {% for cat in category %}
@@ -13,81 +14,147 @@
     {% endif %}
 {% endblock%}
 
+<!--ВЫВОД ИМЕНИ АВТОРА ПОД ШАПКОЙ -->
+{% block text %}
+
+{% if  author_name  %}
+        {% for name_eng,name_rus in authors %}
+            {% if  name_eng == author_name  %}
+
+<div class="well" align="center"><p class="text-primary h2">Все статьи автора : <b>{{ name_rus }}</b></p></div></h3>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+<!--ВЫВОД ИМЕНИ АВТОРА ПОД ШАПКОЙ -->
+
 {% block news%}
     {% if object_list %}
         {% for news in object_list %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div align="right">
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default"><a href="{% url 'edit_news' %}{{news.id}}"><i class="glyphicon glyphicon-pencil"></i></a></button>
-                            <button type="button" class="btn btn-default"><a href="{% url 'delete_news' %}{{news.id}}"><i class="glyphicon glyphicon-trash"></i></a></button>
-                        </div>
-                    </div>
-                    <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
-                    {% for name in authors %}
-                    {% if  name.0 == news.news_authors  %}
-                    <div>
-                        <div align="left">
-                           Корреспондент :  <a href="/author/{{name.0}}">{{ name.1 }}</a>&nbsp&nbsp
-                    {% endif %}
-                    {% endfor %}
-                     <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
-
-                    {{ news.news_date|date:"H:i" }}&nbsp&nbsp
-                    {{ news.news_date|date:"d.m.Y" }}
-                                </div>
-
+            <div class="panel panel-info ">
+                <div class="panel-heading" >
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 h3">
+                                 <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
+                                {% for name in authors %}
+                                    {% if  name.0 == news.news_authors  %}
+                                            <p>Корреспондент :  <a href="/author/{{name.0}}">{{ name.1 }}</a></p>
+                                    {% endif %}
+                                {% endfor %}
+                                <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
                             </div>
 
+                            <div class="col-md-2" align="right">
+
+
+                                <p>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default"><a href="{% url 'edit_news' %}{{news.id}}"><i class="glyphicon glyphicon-pencil"></i></a></button>
+                                        <button type="button" class="btn btn-default"><a href="{% url 'delete_news' %}{{news.id}}"><i class="glyphicon glyphicon-trash"></i></a></button>
+                                    </div>
+                                </p>
+                                <p>{{ news.news_date|date:"H:i" }} ||| {{ news.news_date|date:"d.m.Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body" style="font-size:30px"><a href="{% url 'post' %}?post={{ news.id }}">{{news.news_title}}</a></div>
+                <div class="panel-body" style="font-size:30px">
+                    <p><a href="{% url 'post' %}?post={{ news.id }}">{{news.news_title}}</a></p>
+                </div>
                 <div class="panel-footer">
-                    {{ news.news_category }}  |  <i class="glyphicon glyphicon-thumbs-up"></i> {{ news.news_liked }}
-                            &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbspПросмотров : {{news.news_views}}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <!-- ВЫВОД КАТЕГОРИИ-->
+                                <button class="btn btn-primary " type="button" >
+                                    {{ news.news_category }} <span class="badge"></span>
+                                </button>
+                                <!-- ВЫВОД КАТЕГОРИИ-->
+                            </div>
+
+                            <div class="col-md-1">
+                                <!-- ЛАЙКИ LIKED-->
+                                <button class="btn btn-primary" type="button">
+                                    <i class="glyphicon glyphicon-thumbs-up"></i> <span class="badge">{{ news.news_liked }}</span>
+                                </button>
+                                <!-- ЛАЙКИ LIKED-->
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary " type="button" >
+                                    Просмотров <span class="badge">{{news.news_views}}</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-                    {% if  not forloop.last  %}
-                        <br>
-                    {% endif %}
-        {% endfor %}
-        <center>
+            </div>
+        {% if  not forloop.last  %}
+            <br>
+        {% endif %}
+    {% endfor %}
+
+
+    <center>
+        <div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     {% if  page_obj.has_previous  %}
                         {% if  category_now  %}
-                        <li><a href="{% url 'index' category=category_now%}?page={{page_obj.previous_page_number}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li>
+                                <a href="{% url 'index' category=category_now%}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
                         {% else %}
-                        <li><a href="{% url 'index' %}?page={{page_obj.previous_page_number}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li>
+                                <a href="{% url 'index' %}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
                         {% endif %}
                     {% endif %}
                     {% if  page_obj.has_other_pages  %}
                         {% for pn in page_obj.paginator.page_range %}
                             {% if  category_now  %}
                                 {% if  pn != page_obj.number  %}
-                                    <li><a href="{% url 'index' category=category_now %}?page={{ pn }}">{{ pn }}</a></li>
+                                    <li>
+                                        <a href="{% url 'index' category=category_now %}?page={{ pn }}">{{ pn }}</a>
+                                    </li>
                                 {% else %}
-                                    <li class="active"><a href="">{{ pn }} <span class="sr-only">(current)</span></a></li>
+                                    <li class="active">
+                                        <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                    </li>
                                 {% endif %}
                             {% else %}
                                 {% if  pn != page_obj.number  %}
-                                    <li><a href="{% url 'index' %}?page={{ pn }}">{{ pn }}</a></li>
+                                    <li>
+                                        <a href="{% url 'index' %}?page={{ pn }}">{{ pn }}</a>
+                                    </li>
                                 {% else %}
-                                    <li class="active"><a href="">{{ pn }} <span class="sr-only">(current)</span></a></li>
+                                    <li class="active">
+                                        <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                    </li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% if  page_obj.has_next  %}
                         {% if  category_now  %}
-                            <li><a href="{% url 'index' category=category_now %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                            <li>
+                                <a href="{% url 'index' category=category_now %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                            </li>
                         {% else %}
-                            <li><a href="{% url 'index' %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                            <li>
+                                <a href="{% url 'index' %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                            </li>
                         {% endif %}
                     {% endif %}
                 </ul>
             </nav>
-        </center>
+         </div>
+    </center>
     {% else %}
         <p>НОВОСТИ ОТСУТСТВУЮТ</p>
     {% endif %}
