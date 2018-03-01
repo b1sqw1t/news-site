@@ -4,6 +4,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
 from django.urls import reverse
+from django.contrib import messages
 
 
 from news.forms import NewsForm
@@ -82,6 +83,7 @@ def like(request):
         post = Newsbase.objects.get(pk=id)
         post.news_liked += 1
         post.save()
+        messages.add_message(request,messages.SUCCESS,'МЫ РАДЫ ЧТО ВАМ ПОНРАВИЛАСЬ НОВОСТЬ')
 
         print(post)
         url = '/post?post=' + str(id)

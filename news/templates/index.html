@@ -7,6 +7,7 @@
 {% block category %}
     {% if  category  %}
         {% for cat in category %}
+
         <li><a href="/{{cat.0}}"> {{cat.1}}</a></li>
         {% endfor %}
     {% else %}
