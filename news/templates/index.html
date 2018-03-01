@@ -22,7 +22,7 @@
         {% for name_eng,name_rus in authors %}
             {% if  name_eng == author_name  %}
 
-<div class="well" align="center"><p class="text-primary h2">Все статьи автора : <b>{{ name_rus }}</b></p></div></h3>
+                <div class="well" align="center"><p class="text-primary h2">Все статьи автора : <b>{{ name_rus }}</b></p></div>
             {% endif %}
         {% endfor %}
     {% endif %}
@@ -45,10 +45,7 @@
                                 {% endfor %}
                                 <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
                             </div>
-
                             <div class="col-md-2" align="right">
-
-
                                 <p>
                                     <div class="btn-group" role="group" aria-label="...">
                                         <button type="button" class="btn btn-default"><a href="{% url 'edit_news' %}{{news.id}}"><i class="glyphicon glyphicon-pencil"></i></a></button>
