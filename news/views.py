@@ -205,7 +205,9 @@ class add_news(TemplateView,category_list):
         self.form = NewsForm(request.POST)
         if self.form.is_valid():
             self.form.save()
+            messages.add_message(request, messages.SUCCESS, 'НОВОСТЬ УСПЕШНО ДОБАВЛЕНА')
             return redirect('/')
+        messages.add_message(request,messages.ERROR,'ОШИБКА ПРИ ДОБАВЛЕНИИ НОВОСТИ')
         return super(add_news,self).get(request,*args,**kwargs)
 
 
@@ -237,13 +239,21 @@ class edit_news(TemplateView,category_list):
         self.form = NewsForm(request.POST, instance=self.news)
         if self.form.is_valid():
             self.form.save()
+            messages.add_message(request, messages.SUCCESS, 'НОВОСТЬ УСПЕШНО ОТРЕДАКТИРОВАНА')
             return redirect('/post?post='+self.post_id)
+        messages.add_message(request,messages.ERROR,'ОШИБКА. НОВОСТЬ НЕ ИЗМЕНЕНА')
         return super(edit_news,self).get(request,*args,**kwargs)
 
 
 class delete_news(TemplateView):
     def get(self,request,*args,**kwargs):
-        self.news = get_object_or_404(Newsbase,pk=self.args[0])
-        self.news.delete()
-        return redirect('/')
+        try:
+            self.news = get_object_or_404(Newsbase,pk=self.args[0])
+            self.news.delete()
+            messages.add_message(request,messages.SUCCESS,'НОВОСТЬ УСПЕШНО УДАЛЕНА')
+            return redirect('/')
+        except:
+            messages.add_message(request, messages.WARNING, 'ОШИБКА. Возможно вы пытаетесь удалить несуществующую новость')
+            return redirect('/')
+
 

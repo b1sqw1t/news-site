@@ -14,15 +14,21 @@
 
 
 {% block news %}
-
+                <!--ВЫВОД СООБЩЕНИЙ -->
                 {% if  messages  %}
                     {% for message in messages %}
                         <ul >
-                            <div class="alert alert-{{message.tags}}" role="alert">{{message}}</div>
-
+                            <div class="alert alert-{{message.tags}} h3 alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong> <center>{{message}}</center></strong>
+                            </div>
                         </ul>
                     {% endfor %}
                 {% endif %}
+                <!--ВЫВОД СООБЩЕНИЙ -->
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <p align="right"><a href="{% url 'edit_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp  &nbsp<a href="{% url 'delete_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a></p>
