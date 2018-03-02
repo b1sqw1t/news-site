@@ -18,7 +18,7 @@
 {% block news %}
     <div class="panel panel-default">
         <div class="panel-heading" style="font-size:24px">{{ title }}</div>
-            <form  action="" method="post" style="font-size:18px">
+            <form  action="" method="post" style="font-size:18px" enctype="multipart/form-data">
                 <div class=”form-group”>
                 {% csrf_token %}
                 <table class="table table-hover ">

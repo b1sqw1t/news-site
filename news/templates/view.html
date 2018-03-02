@@ -32,9 +32,27 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <p align="right"><a href="{% url 'edit_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp  &nbsp<a href="{% url 'delete_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a></p>
-                        <p style="font-size:24px">{{news_post.news_title}}</p>
+                        <p style="font-size:24px"><font face="Georgia">{{news_post.news_title}}</font></p>
                          </div>
-                    <div class="panel-body" style="font-size:20px"><p> {{ news_post.news_text }}</p></div>
+                    <div class="panel-body" style="font-size:20px">
+                        {% if  news_post.news_pic1  %}
+                            <p><center><img src="{{news_post.news_pic1.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic2  %}
+                            <p><center><img src="{{news_post.news_pic2.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic3  %}
+                            <p><center><img src="{{news_post.news_pic3.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic4  %}
+                            <p><center><img src="{{news_post.news_pic4.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic5  %}
+                            <p><center><img src="{{news_post.news_pic5.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        <p><font face="Georgia"> {{ news_post.news_text }}</font></p>
+
+                    </div>
                     <div class="panel-footer" style="font-size:16px">
                         Корреспондент : 
                         {% for name in authors %}

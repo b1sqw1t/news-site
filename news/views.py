@@ -95,8 +95,10 @@ def like(request):
 class authors_list_Views(ListView,category_list):
     template_name = 'index.html'
     model = Newsbase
+    paginate_by = 5
 
     def get(self,request,*args,**kwargs):
+        author_name = None
         try:
             self.author_name = self.args[0]
         except:
@@ -202,7 +204,7 @@ class add_news(TemplateView,category_list):
         return context
 
     def post(self,request,*args,**kwargs):
-        self.form = NewsForm(request.POST)
+        self.form = NewsForm(request.POST,request.FILES)
         if self.form.is_valid():
             self.form.save()
             messages.add_message(request, messages.SUCCESS, 'НОВОСТЬ УСПЕШНО ДОБАВЛЕНА')
@@ -236,7 +238,7 @@ class edit_news(TemplateView,category_list):
     def post(self,request,*args,**kwargs):
         self.post_id = self.args[0]
         self.news = Newsbase.objects.get(pk=self.post_id)
-        self.form = NewsForm(request.POST, instance=self.news)
+        self.form = NewsForm(request.POST, request.FILES, instance=self.news)
         if self.form.is_valid():
             self.form.save()
             messages.add_message(request, messages.SUCCESS, 'НОВОСТЬ УСПЕШНО ОТРЕДАКТИРОВАНА')

@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="font-size:30px">
-                    <p><a href="{% url 'post' %}?post={{ news.id }}">{{news.news_title}}</a></p>
+                    <p><font face="Georgia"><a href="{% url 'post' %}?post={{ news.id }}">{{news.news_title}}</a></font></p>
                 </div>
                 <div class="panel-footer">
                     <div class="container">
@@ -114,6 +114,7 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     {% if  page_obj.has_previous  %}
+
                         {% if  category_now  %}
                             <li>
                                 <a href="{% url 'index' category=category_now%}?page={{page_obj.previous_page_number}}" aria-label="Previous">
@@ -121,11 +122,20 @@
                                 </a>
                             </li>
                         {% else %}
+                            {% if  author_name  %}
+                                <li>
+                                    <a href="{% url 'authors' author_name%}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                            {% else %}
                             <li>
                                 <a href="{% url 'index' %}?page={{page_obj.previous_page_number}}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                     {% if  page_obj.has_other_pages  %}
@@ -136,20 +146,36 @@
                                         <a href="{% url 'index' category=category_now %}?page={{ pn }}">{{ pn }}</a>
                                     </li>
                                 {% else %}
+
                                     <li class="active">
                                         <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
                                     </li>
                                 {% endif %}
                             {% else %}
-                                {% if  pn != page_obj.number  %}
-                                    <li>
-                                        <a href="{% url 'index' %}?page={{ pn }}">{{ pn }}</a>
-                                    </li>
+                                {% if  author_name  %}
+                    <!-- ---------------------------------------------------------- -->
+                                    {% if  pn != page_obj.number  %}
+                                        <li>
+                                            <a href="{% url 'authors' author_name%}?page={{ pn }}">{{ pn }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="active">
+                                            <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% endif %}
+                    <!-- ---------------------------------------------------------- -->
+
                                 {% else %}
-                                    <li class="active">
-                                        <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
-                                    </li>
-                                {% endif %}
+                                    {% if  pn != page_obj.number  %}
+                                        <li>
+                                            <a href="{% url 'index' %}?page={{ pn }}">{{ pn }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="active">
+                                            <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% endif %}
+                            {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -159,9 +185,18 @@
                                 <a href="{% url 'index' category=category_now %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
                             </li>
                         {% else %}
-                            <li>
-                                <a href="{% url 'index' %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-                            </li>
+                            {% if  author_name  %}
+                                <li>
+                                    <a href="{% url 'authors' author_name%}?page={{page_obj.next_page_number}}" aria-label="Previous">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+
+                            {% else %}
+                                <li>
+                                 <a href="{% url 'index' %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                             </li>
+                    {% endif %}
                         {% endif %}
                     {% endif %}
                 </ul>
