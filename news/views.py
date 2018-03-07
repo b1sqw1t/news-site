@@ -18,8 +18,6 @@ class category_list(ContextMixin):
         return context
 
 
-
-
 class index_list_Views(ListView,category_list):
     model = Newsbase
     template_name = 'index.html'
@@ -75,7 +73,6 @@ class post_Views(DetailView,category_list):
         return get_object_or_404(Newsbase,pk=self.post)
 
 
-
 def like(request):
     from .models import Newsbase
     try:
@@ -112,74 +109,6 @@ class authors_list_Views(ListView,category_list):
 
     def get_queryset(self):
         return Newsbase.objects.filter(news_authors = self.author_name).order_by('-news_date')
-
-
-
-
-
-#
-#
-# class add_news(TemplateView,category_list):
-#     template_name = 'add_news.html'
-#     form = None
-#     def get(self,request,*args,**kwargs):
-#         try:
-#             cat = self.args[0]
-#         except:
-#             pass
-#         self.form = NewsForm(initial={'news_category':cat})
-#         return super(add_news,self).get(request,*args,**kwargs)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(add_news,self).get_context_data(**kwargs)
-#         context['form'] = self.form
-#         context['btn'] = 'Добавить'
-#         context['title'] = 'Добавление Новости'
-#         return context
-#
-#     def post(self, request, *args, **kwargs):
-#         self.form = NewsForm(request.POST)
-#         if self.form.is_valid():
-#             self.form.save()
-#             self.url = Newsbase.objects.last()
-#             return redirect('/post?post='+str(self.url.id))
-#         return super(add_news,self).get(request,*args,**kwargs)
-#
-#
-#
-# class edit_news(TemplateView,category_list):
-#     template_name = 'add_news.html'
-#     form = None
-#     post_id = None
-#
-#     def get(self,request,*args,**kwargs):
-#         try:
-#             self.post_id = self.args[0]
-#         except:
-#             self.post_id = 1
-#         self.form = NewsForm(instance=Newsbase.objects.get(id=self.post_id))
-#         return super(edit_news,self).get(request,*args,**kwargs)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(edit_news,self).get_context_data(**kwargs)
-#         context['post'] = Newsbase.objects.get(id=self.post_id)
-#         context['post_id'] = self.post_id
-#         context['form'] = self.form
-#         context['btn'] = 'Применить'
-#         context['title'] = 'Редактирование новости'
-#
-#         return context
-#
-#     def post(self,request,*args,**kwargs):
-#         self.post_id = self.args[0]
-#         post = Newsbase.objects.get(id=self.post_id)
-#         self.form = NewsForm(request.POST,instance=post)
-#         if self.form.is_valid():
-#             print('IS_VALID')
-#             self.form.save()
-#             print('REDIRECT = '+'/post?=post'+str(self.post_id))
-#             return redirect('/post?post='+str(self.post_id))
-#         return super(edit_news, self).get(request, *args, **kwargs)
 
 
 
@@ -257,5 +186,34 @@ class delete_news(TemplateView):
         except:
             messages.add_message(request, messages.WARNING, 'ОШИБКА. Возможно вы пытаетесь удалить несуществующую новость')
             return redirect('/')
+
+
+
+# def test_view(request):
+#     print()
+#
+#
+#     title = 'LOX'
+#     return render_to_response('test.html',locals())
+
+def test(request):
+    print('WORK')
+    if request.method == 'GET':
+        print('РАБОТАЕТ')
+        from news import parsing
+        context = parsing.main()
+        for i in context:
+            try:
+                print(i)
+                from news.models import Testbase
+                p = Testbase(title=i['title'], text=i['text'])
+                    # datetime='2006-10-25 14:30',
+                    # image='http://yandex.ru',
+                    # cop_url='http://google.com')
+                p.save()
+                print('ГОТОВО')
+            except:
+                print('ОШИБКА')
+    return render_to_response(template_name='test.html', context=locals())
 
 

@@ -84,3 +84,14 @@ class Newsbase(models.Model):
         self.news_pic5.delete(save = False)
         super(Newsbase,self).delete(*args,**kwargs)
 
+
+class Testbase(models.Model):
+    class Meta:
+        verbose_name = 'Тест риа новости'
+    title = models.CharField(max_length=300,verbose_name='Заголовок',unique=True)
+    datetime = models.DateTimeField(verbose_name='Дата и время публикации',auto_now_add=True)
+    text = models.TextField(verbose_name='Статья')
+    image = models.URLField(verbose_name='Ссылка на изображение',default='http://ria.ru')
+    cop_url = models.URLField(verbose_name='Ссылка на статью РИА',default='http://ria.ru')
+    def __str__(self):
+        return '%s %s %s' %(self.title,self.text,self.datetime)
