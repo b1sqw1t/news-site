@@ -8,7 +8,7 @@ from django.contrib import messages
 
 
 from news.forms import NewsForm
-from news.models import Newsbase
+from news.models import Newsbase, Testbase
 
 class category_list(ContextMixin):
     def get_context_data(self, **kwargs):
@@ -46,6 +46,35 @@ class index_list_Views(ListView,category_list):
             return Newsbase.objects.filter(news_category=self.category).order_by('-news_date')
 
 
+class ria_list_Views(ListView,category_list):
+    model = Testbase
+    template_name = 'ria_index.html'
+    paginate_by = 5
+    context_object_name = 'list'
+
+    def get(self,request,*args,**kwargs):
+        try:
+            self.category = self.kwargs['category']
+
+        except:
+            self.category = None
+
+        return super(ria_list_Views,self).get(request,*args,**kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ria_list_Views,self).get_context_data(**kwargs)
+        context['category_now'] = self.category
+        context['title'] = 'News_Land : РИА - РИА Новости портал'
+        return context
+
+    def get_queryset(self):
+        if self.category == None:
+            return Testbase.objects.order_by('-datetime')
+        else:
+            #return Newsbase.objects.filter(news_category=self.category).order_by('-news_date')
+            return Newsbase.objects.order_by('-datetime')
+
+
 class post_Views(DetailView,category_list):
     model = Newsbase
     template_name = 'view.html'
@@ -71,6 +100,32 @@ class post_Views(DetailView,category_list):
 
     def get_object(self):
         return get_object_or_404(Newsbase,pk=self.post)
+
+
+class ria_post_Views(DetailView,category_list):
+    model = Newsbase
+    template_name = 'view.html'
+    pk_url_kwarg = 'post'
+    context_object_name = 'news_post'
+
+    def get(self,request,*args,**kwargs):
+        try:
+            self.post = self.request.GET['post']
+        except:
+            self.post = 1
+        self.view = get_object_or_404(Testbase,pk=self.post)
+        self.view.news_views += 1
+        self.view.save()
+        return super(ria_post_Views,self).get(request,*args,**kwargs)
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ria_post_Views,self).get_context_data(**kwargs)
+        context['authors'] = self.authors
+        return context
+
+    def get_object(self):
+        return get_object_or_404(Testbase,pk=self.post)
 
 
 def like(request):
@@ -189,14 +244,10 @@ class delete_news(TemplateView):
 
 
 
-# def test_view(request):
-#     print()
-#
-#
-#     title = 'LOX'
-#     return render_to_response('test.html',locals())
+
 
 def test(request):
+    from news.models import Testbase
     print('WORK')
     if request.method == 'GET':
         print('РАБОТАЕТ')
@@ -204,8 +255,6 @@ def test(request):
         context = parsing.main()
         for i in context:
             try:
-                print(i)
-                from news.models import Testbase
                 p = Testbase(title=i['title'], text=i['text'])
                     # datetime='2006-10-25 14:30',
                     # image='http://yandex.ru',
@@ -214,6 +263,8 @@ def test(request):
                 print('ГОТОВО')
             except:
                 print('ОШИБКА')
+                print(i)
+
     return render_to_response(template_name='test.html', context=locals())
 
 

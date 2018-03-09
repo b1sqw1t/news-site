@@ -23,6 +23,12 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li>
+                    <a href="/admin" target="_blank"><i class="glyphicon glyphicon-plus"></i>ADMIN</a>
+                </li>
+                <li>
+                    <a href="{% url 'ria_index' %}" target="_blank"><i class="glyphicon glyphicon-plus"></i>RIA</a>
+                </li>
                 {% if category_now %}
                     <li>
                         <a href="/{{ category_now }}/add_news"><i class="glyphicon glyphicon-plus"></i>ADD NEWS</a>

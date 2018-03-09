@@ -1,0 +1,76 @@
+{% extends "base/main.html" %}
+{% block title %}
+    ПОСТ :: {{ news_post.news_title }}
+{% endblock %}
+{% block category %}
+    {% if  category  %}
+        {% for cat in category %}
+        <li><a href="/{{cat.0}}"> {{cat.1}}</a></li>
+        {% endfor %}
+    {% else %}
+        <p> Категории отсутсвуют</p>
+    {% endif %}
+{% endblock%}
+
+
+{% block news %}
+                <!--ВЫВОД СООБЩЕНИЙ -->
+                {% if  messages  %}
+                    {% for message in messages %}
+                        <ul >
+                            <div class="alert alert-{{message.tags}} h3 alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong> <center>{{message}}</center></strong>
+                            </div>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+                <!--ВЫВОД СООБЩЕНИЙ -->
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p align="right"><a href="{% url 'edit_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp  &nbsp<a href="{% url 'delete_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a></p>
+                        <p style="font-size:24px"><font face="Georgia">{{news_post.news_title}}</font></p>
+                         </div>
+                    <div class="panel-body" style="font-size:20px">
+                        {% if  news_post.news_pic1  %}
+                            <p><center><img src="{{news_post.news_pic1.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic2  %}
+                            <p><center><img src="{{news_post.news_pic2.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic3  %}
+                            <p><center><img src="{{news_post.news_pic3.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic4  %}
+                            <p><center><img src="{{news_post.news_pic4.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        {% if  news_post.news_pic5  %}
+                            <p><center><img src="{{news_post.news_pic5.url}}" width="90%" height="90%"></center></p>
+                        {% endif %}
+                        <p><font face="Georgia"> {{ news_post.news_text }}</font></p>
+
+                    </div>
+                    <div class="panel-footer" style="font-size:16px">
+                        Корреспондент : 
+                        {% for name in authors %}
+                            {% if  name.0 == news_post.news_authors  %}
+                        <a href="/author/{{name.0}}">{{ name.1 }}</a>
+
+                            {% endif %}
+                        {% endfor %}
+                        
+
+                        
+                        
+                        
+                        &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
+                        {{ news_post.news_date|date:"H:i" }} &nbsp&nbsp {{ news_post.news_date|date:"d.m.Y" }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
+                        <a href="{% url "like" %}?post={{ news_post.id }}"><i class="glyphicon glyphicon-thumbs-up"></i></a> {{ news_post.news_liked }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
+                        Просмотров : {{news_post.news_views}}</div>
+                </div>
+            <br>
+
+{% endblock %}

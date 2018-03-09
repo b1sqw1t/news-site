@@ -10,4 +10,6 @@ urlpatterns = [
     re_path('^(?:(\w+)/)?add_news$', views.add_news.as_view(), name='add_news'),
     re_path('^edit/(?:(\d+)/)?$', views.edit_news.as_view(), name='edit_news'),
     re_path('^delete/(?:(\d+)/)?$', views.delete_news.as_view(), name='delete_news'),
+    re_path('^ria/index$', views.ria_list_Views.as_view(), name='ria_index'),
+
 ]

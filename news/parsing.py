@@ -1,33 +1,15 @@
 # -*- coding: utf-8 -*-
 #Парсинг новостных сайта(ов)
+
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+from multiprocessing import pool
+
 
 def get_html(url): #Тут мы получаем ссылку и отправляем в ответ html код страницы
     r = requests.get(url)   #Response
     return r.text           #Response html code url Возвращает html код страницы
-
-def get_out(title):#Функция ищет в тексте начала тега < и конец > и удаляет их и все что в них и возвращает текст
-    try:
-        while True:
-            if '<' in title:
-                title = title[:title.index('<')]+title[title.index('>')+1:]
-            else:
-                break
-    except:
-        pass
-    return title
-
-def get_url_image(text):#Функция будет вытаскивать из текста ссылку на изображение
-    try:
-        text = text[text.index('src="')+5:]
-        text = text[:text.index('"')]
-    except:
-        pass
-    return text
-
-
-
 
 def get_all_category(html): #получаем html код и оттуда выискиваем ШАПКУ МЕНЮ САЙТА и оттуда берем категории для ссылок
     soup = BeautifulSoup(html, 'lxml')
@@ -43,7 +25,6 @@ def get_all_category(html): #получаем html код и оттуда выи
         if a and len(a)>1:
             links.append(a)
     return links
-
 
 def get_all_links(html): #получаем все категории новостей для ссылок на их страницы
     soup = BeautifulSoup(html, 'lxml')
@@ -75,12 +56,31 @@ def get_all_links(html): #получаем все категории новос�
     except:
         pass
 
+def get_out(title):#Функция ищет в тексте начала тега < и конец > и удаляет их и все что в них и возвращает текст
+    try:
+        while True:
+            if '<' in title:
+                title = title[:title.index('<')]+title[title.index('>')+1:]
+            else:
+                break
+    except:
+        pass
+    return title
+
+def get_url_image(text):#Функция будет вытаскивать из текста ссылку на изображение
+    try:
+        text = text[text.index('src="')+5:]
+        text = text[:text.index('"')]
+    except:
+        pass
+    return text
+
 
 def get_context_links(html,url):
     try:
         soup = BeautifulSoup(html, 'lxml')
         result = dict()
-        title = soup.find('h1', class_='b-article__title').get_text() #Избавится от тега <span>
+        title = soup.find('h1', class_='b-article__title').text.strip() #Избавится от тега <span>
 
         result['title'] = title
         result['dt'] = get_out(str(soup.find('div', class_='b-article__info-date').find_all('span'))) #Избавится от тегов
@@ -108,24 +108,39 @@ def get_context_links(html,url):
     #6.Ссылка на статью
 
 
-
-
-
-def main():
+def bee_cool1():
     url = 'https://ria.ru'
     all_category = get_all_category(get_html(url))
-    all_links=[]
-    context=[] #Тут хранятся все новости
-
+    all_links = []
     for category in all_category:
-        print(url+category)
-        all_links.append(get_all_links(get_html(url+category)))
-    context = []
+        print(url + category)
+        all_links.append(get_all_links(get_html(url + category)))
+    return all_links
+
+def bee_cool2(all_links):
+    TODO: 'Исправить на добавление в текстовый файл'
+    context=[] #Тут хранятся все новости
+    url = 'https://ria.ru'
     for list in all_links:
         for urls in list:
             print(url+urls)
             context.append(get_context_links(get_html(url+urls),url+urls))
     return context
+
+
+def main():
+    TODO: 'добавить две функции в одну'
+    start = datetime.now()
+    all_links = bee_cool1()
+    context = bee_cool2(all_links)
+
+
+
+    end = datetime.now()
+    total = end - start
+    print(str(total))
+    return context
+
 main()
 
 

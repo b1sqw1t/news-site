@@ -89,9 +89,10 @@ class Testbase(models.Model):
     class Meta:
         verbose_name = 'Тест риа новости'
     title = models.CharField(max_length=300,verbose_name='Заголовок',unique=True)
-    datetime = models.DateTimeField(verbose_name='Дата и время публикации',auto_now_add=True)
+    datetime = models.DateTimeField(auto_now_add=True,verbose_name='Дата публикации')
     text = models.TextField(verbose_name='Статья')
     image = models.URLField(verbose_name='Ссылка на изображение',default='http://ria.ru')
     cop_url = models.URLField(verbose_name='Ссылка на статью РИА',default='http://ria.ru')
+    news_views = models.IntegerField(verbose_name='Просмотры', default=0)
     def __str__(self):
         return '%s %s %s' %(self.title,self.text,self.datetime)

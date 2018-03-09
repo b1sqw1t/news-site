@@ -1,0 +1,190 @@
+{% extends 'base/main.html' %}
+{% load staticfiles %}
+
+{% block title %} {{ title }} {% endblock %}
+
+
+{% block category %}
+    {% if  category  %}
+        {% for cat in category %}
+
+        <li><a href="/{{cat.0}}"> {{cat.1}}</a></li>
+        {% endfor %}
+    {% else %}
+        <p> Категории отсутсвуют</p>
+    {% endif %}
+{% endblock%}
+
+<!--ВЫВОД ИМЕНИ АВТОРА ПОД ШАПКОЙ -->
+{% block text %}
+
+{% if  author_name  %}
+        {% for name_eng,name_rus in authors %}
+            {% if  name_eng == author_name  %}
+
+                <div class="well" align="center"><p class="text-primary h2">Все статьи автора : <b>{{ name_rus }}</b></p></div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+<!--ВЫВОД ИМЕНИ АВТОРА ПОД ШАПКОЙ -->
+
+{% block news%}
+    <!--ВЫВОД СООБЩЕНИЙ -->
+    {% if  messages  %}
+        {% for message in messages %}
+            <ul >
+                <div class="alert alert-{{message.tags}} h3 alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                         <strong> <center>{{message}}</center></strong>
+                </div>
+
+            </ul>
+        {% endfor %}
+    {% endif %}
+    <!--ВЫВОД СООБЩЕНИЙ -->
+    {% if object_list %}
+        {% for news in object_list %}
+            <div class="panel panel-info ">
+                <div class="panel-heading" >
+                        <h2><p><font face="Georgia"><a href="{% url 'post' %}?post={{ news.id }}">{{news.title}}</a></font></p></h2>
+                </div>
+                <div class="panel-body" style="font-size:30px">
+                    <p><font face="Georgia"><a href="{% url 'post' %}?post={{ news.id }}">{% autoescape off %}{{news.text|truncatewords:30}}{% endautoescape %}</a></font></p>
+                </div>
+                <div class="panel-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <!-- ВЫВОД КАТЕГОРИИ-->
+                                <button class="btn btn-primary " type="button" >
+                                    {{ news.news_category }} <span class="badge"></span>
+                                </button>
+                                <!-- ВЫВОД КАТЕГОРИИ-->
+                            </div>
+
+                            <div class="col-md-1">
+                                <!-- ЛАЙКИ LIKED-->
+                                <button class="btn btn-primary" type="button">
+                                    <i class="glyphicon glyphicon-thumbs-up"></i> <span class="badge">{{ news.news_liked }}</span>
+                                </button>
+                                <!-- ЛАЙКИ LIKED-->
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary " type="button" >
+                                    Просмотров <span class="badge">{{news.news_views}}</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% if  not forloop.last  %}
+            <br>
+        {% endif %}
+    {% endfor %}
+
+ <!-- ==============ПАГИНАТОР================ ==============ПАГИНАТОР================-->
+
+    <center>
+        <div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if  page_obj.has_previous  %}
+
+                        {% if  category_now  %}
+                            <li>
+                                <a href="{% url 'ria_index' category=category_now%}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            {% if  author_name  %}
+                                <li>
+                                    <a href="{% url 'authors' author_name%}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                            {% else %}
+                            <li>
+                                <a href="{% url 'ria_index' %}?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if  page_obj.has_other_pages  %}
+                        {% for pn in page_obj.paginator.page_range %}
+                            {% if  category_now  %}  <!-- Если ВЫБРАННА КАТЕГОРИЯ новости-->
+                                {% if  pn != page_obj.number  %}
+                                    <li>
+                                        <a href="{% url 'ria_index' category=category_now %}?page={{ pn }}">{{ pn }}</a>
+                                    </li>
+                                {% else %}
+
+                                    <li class="active">
+                                        <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                {% if  author_name  %}
+                    <!-- ---------------------------------------------------------- -->
+                                    {% if  pn != page_obj.number  %}
+                                        <li>
+                                            <a href="{% url 'authors' author_name%}?page={{ pn }}">{{ pn }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="active">
+                                            <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% endif %}
+                    <!-- ---------------------------------------------------------- -->
+
+                                {% else %}
+                                    {% if  pn != page_obj.number  %}
+                                        <li>
+                                            <a href="{% url 'ria_index' %}?page={{ pn }}">{{ pn }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="active">
+                                            <a href="">{{ pn }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% endif %}
+                            {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if  page_obj.has_next  %}
+                        {% if  category_now  %}
+                            <li>
+                                <a href="{% url 'ria_index' category=category_now %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                            </li>
+                        {% else %}
+                            {% if  author_name  %}
+                                <li>
+                                    <a href="{% url 'authors' author_name%}?page={{page_obj.next_page_number}}" aria-label="Previous">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+
+                            {% else %}
+                                <li>
+                                 <a href="{% url 'ria_index' %}?page={{page_obj.next_page_number}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                             </li>
+                    {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </nav>
+         </div>
+    </center>
+    {% else %}
+        <p>НОВОСТИ ОТСУТСТВУЮТ</p>
+    {% endif %}
+{% endblock %}
