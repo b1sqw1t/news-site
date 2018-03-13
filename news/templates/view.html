@@ -14,7 +14,7 @@
 
 
 {% block news %}
-                <!--ВЫВОД СООБЩЕНИЙ -->
+                <!--ВЫВОД СООБЩЕНИЙ ОШИБОК-->
                 {% if  messages  %}
                     {% for message in messages %}
                         <ul >
@@ -27,11 +27,19 @@
                         </ul>
                     {% endfor %}
                 {% endif %}
-                <!--ВЫВОД СООБЩЕНИЙ -->
+                <!--ВЫВОД СООБЩЕНИЙ ОШИБОК-->
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <p align="right"><a href="{% url 'edit_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-pencil"></i></a>&nbsp  &nbsp<a href="{% url 'delete_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a></p>
+                        <p align="right">
+                            {% if  perms.news.change_Newsbase  %}
+                                <a href="{% url 'edit_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+                            {% endif %}
+                            &nbsp  &nbsp
+                            {% if  perms.news.delete_Newsbase  %}
+                                <a href="{% url 'delete_news' %}{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a>
+                            {% endif %}
+                        </p>
                         <p style="font-size:24px"><font face="Georgia">{{news_post.news_title}}</font></p>
                          </div>
                     <div class="panel-body" style="font-size:20px">

@@ -24,11 +24,11 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/admin" target="_blank"><i class="glyphicon glyphicon-plus"></i>ADMIN</a>
-                </li>
-                <li>
                     <a href="{% url 'ria_index' %}" target="_blank"><i class="glyphicon glyphicon-plus"></i>RIA</a>
                 </li>
+
+            {% if  perms.news.add_Newsbase  %}
+                
                 {% if category_now %}
                     <li>
                         <a href="/{{ category_now }}/add_news"><i class="glyphicon glyphicon-plus"></i>ADD NEWS</a>
@@ -38,6 +38,15 @@
                         <a href="/add_news"><i class="glyphicon glyphicon-plus"></i>ADD NEWS</a>
                     </li>
                 {% endif %}
+            {% endif %}
+
+                {% if  user.is_superuser  %}
+                <li>
+                    <a href="/admin" target="_blank"><i class="glyphicon glyphicon-plus"></i>ADMIN</a>
+                </li>
+                {% endif %}
+                
+
             </ul>
         </div>
   </div>
@@ -62,12 +71,27 @@
         </div>
         <div class="col-md-2" >
             {% block reklama %}
-            <p class="h3">ТУТ БУДЕТ БЛОК АВТОРИЗАЦИИ</p>
-            <br>
-            <p>БЛОК КАЛЕНДАРЬ</p>
-            <br>
+
+            <div>
+                {% if user.is_authenticated %}
+
+                    <p>{{ user.get_full_name }} / <a href="{% url 'logout' %}">Выйти</a> </p>
+                {% else %}
+                    <p><a href="{% url 'login' %}">ВОЙТИ</a> </p>
+                    <p><a href="#">РЕГИСТРАЦИЯ</a></p>
+                {% endif %}
+
+
+            </div>
+            <hr>
+            <div>
+                <p>БЛОК КАЛЕНДАРЬ</p>
+            <hr>
+            </div>
+            <div>
             <p>ТОП 5 САМЫХ ПОПУЛЯРНЫХ НОВОСТЕЙ</p>
-            <br>
+            <hr>
+            </div>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                   <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">

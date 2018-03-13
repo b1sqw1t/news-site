@@ -63,9 +63,13 @@
                             <div class="col-md-2" align="right">
                                 <p>
                                     <div class="btn-group" role="group" aria-label="...">
+                                {% if  perms.news.change_Newsbase  %}
                                         <button type="button" class="btn btn-default"><a href="{% url 'edit_news' %}{{news.id}}"><i class="glyphicon glyphicon-pencil"></i></a></button>
-                                        <button type="button" class="btn btn-default"><a href="{% url 'delete_news' %}{{news.id}}"><i class="glyphicon glyphicon-trash"></i></a></button>
-                                    </div>
+                                {% endif %}
+                                {% if  perms.news.delete_Newsbase  %}
+                                <button type="button" class="btn btn-default"><a href="{% url 'delete_news' %}{{news.id}}"><i class="glyphicon glyphicon-trash"></i></a></button>
+                                {% endif %}
+                                </div>
                                 </p>
                                 <p>{{ news.news_date|date:"H:i" }} ||| {{ news.news_date|date:"d.m.Y" }}</p>
                             </div>

@@ -1,0 +1,29 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block title %}   АВТОРИЗАЦИЯ    {% endblock %}
+
+{% block category %}
+    {% if  category  %}
+        {% for cat in category %}
+
+        <li><a href="/{{cat.0}}"> {{cat.1}}</a></li>
+        {% endfor %}
+    {% else %}
+        <p> Категории отсутсвуют</p>
+    {% endif %}
+{% endblock%}
+
+{% block text %}
+    <h2>Авторизация</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Войти">
+        <input type="hidden" name="next" value="{{next}}">
+    </form>
+
+{% endblock %}

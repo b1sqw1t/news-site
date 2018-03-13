@@ -121,6 +121,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#Настройки МЕДИА, директория, куда будет сохранятся загруженные изображения(uploads)
 MEDIA_ROOT = os.path.join(BASE_DIR,'uploads')
 MEDIA_URL = '/media/'
 
+#Настройка авторизации
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '/'

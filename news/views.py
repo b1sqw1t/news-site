@@ -245,7 +245,6 @@ class delete_news(TemplateView):
 
 
 
-
 def test(request):
     from news.models import Testbase
     print('WORK')
