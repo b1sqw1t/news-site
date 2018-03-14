@@ -1,13 +1,14 @@
 from django.shortcuts import render_to_response, redirect,get_object_or_404
-from django.views.generic.base import ContextMixin, TemplateView
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.views.generic.list import ListView
+from django.views.generic.base import ContextMixin, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
-from django.urls import reverse
 from django.contrib import messages
 
-
-from news.forms import NewsForm
+from news.forms import NewsForm, LoginForm, RegisterForm
 from news.models import Newsbase, Testbase
 
 class category_list(ContextMixin):
@@ -136,8 +137,6 @@ def like(request):
         post.news_liked += 1
         post.save()
         messages.add_message(request,messages.SUCCESS,'МЫ РАДЫ ЧТО ВАМ ПОНРАВИЛАСЬ НОВОСТЬ')
-
-        print(post)
         url = '/post?post=' + str(id)
     except:
         url = '/'
@@ -267,3 +266,66 @@ def test(request):
     return render_to_response(template_name='test.html', context=locals())
 
 
+class LoginView(TemplateView,category_list):
+    form = None
+    template_name = 'registration/login.html'
+
+    def get(self,request,*args,**kwargs):
+        self.form = LoginForm()
+        return super(LoginView,self).get(request,*args,**kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginView,self).get_context_data(**kwargs)
+        context['form'] = self.form
+
+        return context
+
+    def post(self,request,*args,**kwargs):
+        self.form = LoginForm(request.POST)
+        if self.form.is_valid():
+            user = authenticate(username = self.form.cleaned_data['username'],
+                             password = self.form.cleaned_data['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request,user)
+                    return redirect('/')
+                else:
+                    return super(LoginView,self).get(request,*args,**kwargs)
+            else:
+                return super(LoginView, self).get(request, *args, **kwargs)
+        else:
+            return super(LoginView, self).get(request, *args, **kwargs)
+
+class RegisterView(TemplateView,category_list,UserCreationForm):
+    form = None
+    template_name = 'registration/register.html'
+
+    def get(self,request,*args,**kwargs):
+        self.form = UserCreationForm
+        return super(RegisterView,self).get(request,*args,**kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(RegisterView,self).get_context_data(**kwargs)
+        context['form'] = self.form
+
+        return context
+
+    def post(self,request,*args,**kwargs):
+        self.form =UserCreationForm(request.POST)
+        if self.form.is_valid():
+            self.form.save()
+            user = authenticate(username=self.form.cleaned_data['username'],
+                                password=self.form.cleaned_data['password1'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/')
+            return redirect('login')
+        else:
+            return super(RegisterView, self).get(request, *args, **kwargs)
+
+class LogoutView(TemplateView):
+    template_name = 'registration/logout.html'
+    def get(self,request,*args,**kwargs):
+        logout(request)
+        return redirect('/')

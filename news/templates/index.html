@@ -92,9 +92,18 @@
 
                             <div class="col-md-1">
                                 <!-- ЛАЙКИ LIKED-->
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'like' %}?post={{ news.id }}">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                            <span class="badge">{{ news.news_liked }}</span>
+                                    </button></a>
+                                {% else %}
                                 <button class="btn btn-primary" type="button">
-                                    <i class="glyphicon glyphicon-thumbs-up"></i> <span class="badge">{{ news.news_liked }}</span>
-                                </button>
+                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                            <span class="badge">{{ news.news_liked }}</span>
+                                    </button>
+                                {% endif %}
                                 <!-- ЛАЙКИ LIKED-->
                             </div>
                             <div class="col-md-2">

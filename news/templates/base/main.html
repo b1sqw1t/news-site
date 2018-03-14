@@ -77,8 +77,13 @@
 
                     <p>{{ user.get_full_name }} / <a href="{% url 'logout' %}">Выйти</a> </p>
                 {% else %}
-                    <p><a href="{% url 'login' %}">ВОЙТИ</a> </p>
-                    <p><a href="#">РЕГИСТРАЦИЯ</a></p>
+                <table>
+                    <tr>
+                        <td><p><a href="{% url 'login' %}"><button type="button" class="btn btn-default navbar-btn">Войти</button></a> </p></td>
+                        <td><p><a href="{% url 'register' %}"><button type="button" class="btn btn-default navbar-btn">Регистрация</button></a></p></td>
+                    </tr>
+                </table>
+
                 {% endif %}
 
 

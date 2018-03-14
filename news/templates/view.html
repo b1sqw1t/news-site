@@ -75,7 +75,8 @@
                         
                         
                         &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
-                        {{ news_post.news_date|date:"H:i" }} &nbsp&nbsp {{ news_post.news_date|date:"d.m.Y" }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
+                        {{ news_post.news_date|date:"H:i" }} &nbsp&nbsp
+                        {{ news_post.news_date|date:"d.m.Y" }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
                         <a href="{% url "like" %}?post={{ news_post.id }}"><i class="glyphicon glyphicon-thumbs-up"></i></a> {{ news_post.news_liked }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
                         Просмотров : {{news_post.news_views}}</div>
                 </div>

@@ -15,15 +15,28 @@
 {% endblock%}
 
 {% block text %}
-    <h2>Авторизация</h2>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Авторизация</h1>
+        </div>
+        <div class="panel-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <table class="table">
+                    {% for field in form %}
+                        <tr>
+                            <td><h3><b>{{ field.label }}</b></h3> </td>
+                            <td><p><h3>{{ field }}</h3></p> </td>
+                        </tr>
+                    {% endfor %}
 
-        {{ form.as_table }}
-        </table>
-        <input type="submit" value="Войти">
-        <input type="hidden" name="next" value="{{next}}">
-    </form>
+                </table>
+
+                    <button type="submit" class="btn btn-primary navbar-btn" value="Войти">Войти</button>
+                    <input type="hidden" name="next" value="{{next}}">
+
+
+        </div>
+    </div>
 
 {% endblock %}
