@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView,UpdateView,DeleteView,ProcessFo
 from django.contrib import messages
 
 from news.forms import NewsForm, LoginForm, RegisterForm
-from news.models import Newsbase, Testbase
+from news.models import Newsbase, Testbase, Profile
 
 class category_list(ContextMixin):
     def get_context_data(self, **kwargs):
@@ -131,13 +131,20 @@ class ria_post_Views(DetailView,category_list):
 
 def like(request):
     from .models import Newsbase
+
     try:
         id = request.GET['post']
         post = Newsbase.objects.get(pk=id)
         post.news_liked += 1
         post.save()
         messages.add_message(request,messages.SUCCESS,'МЫ РАДЫ ЧТО ВАМ ПОНРАВИЛАСЬ НОВОСТЬ')
-        url = '/post?post=' + str(id)
+        try:
+            if request.GET['news']:
+                url = '/post?post=' + str(id)
+        except:
+            if request.GET['home']:
+                url = request.GET['home']
+                url +='#'+request.GET['id']
     except:
         url = '/'
     return redirect(url)
@@ -329,3 +336,17 @@ class LogoutView(TemplateView):
     def get(self,request,*args,**kwargs):
         logout(request)
         return redirect('/')
+
+
+def edit_profile(request,id):
+    category = Newsbase.category
+    all_users = User.objects.all()
+    user = Profile.objects.filter(user=id)
+    print('РАБОТАЕТ')
+    return render_to_response('registration/edit_profile.html',locals())
+
+def users(request):
+    category = Newsbase.category
+    user_objects = User.objects.all()
+    return render_to_response('registration/users.html',locals())
+

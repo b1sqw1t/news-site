@@ -60,6 +60,7 @@
                                 {% endfor %}
                                 <!--- ВЫВОД ССЫЛКИ НА ПОИСК АВТОРА ПО ИМЕНИ И ФАМИЛИИ -->
                             </div>
+                                <!------------- ВЫВОД КНОПОК РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ ------------>
                             <div class="col-md-2" align="right">
                                 <p>
                                     <div class="btn-group" role="group" aria-label="...">
@@ -71,12 +72,15 @@
                                 {% endif %}
                                 </div>
                                 </p>
+                                <!------------- ВЫВОД КНОПОК РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ ------------>
+                                <!------------- ВЫВОД ДАТЫ И ВРЕМЕНИ ПУБЛИКАЦИИ СТАТЬИ ------------>
                                 <p>{{ news.news_date|date:"H:i" }} ||| {{ news.news_date|date:"d.m.Y" }}</p>
+                                <!------------- ВЫВОД ДАТЫ И ВРЕМЕНИ ПУБЛИКАЦИИ СТАТЬИ ------------>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="panel-body" style="font-size:30px">
+                <div class="panel-body" style="font-size:30px" id="{{news.id}}">
                     <p><font face="Georgia"><a href="{% url 'post' %}?post={{ news.id }}">{{news.news_title}}</a></font></p>
                 </div>
                 <div class="panel-footer">
@@ -93,7 +97,7 @@
                             <div class="col-md-1">
                                 <!-- ЛАЙКИ LIKED-->
                                 {% if user.is_authenticated %}
-                                <a href="{% url 'like' %}?post={{ news.id }}">
+                                <a href="{% url 'like' %}?post={{ news.id }}&home={{ request.get_full_path }}&id={{news.id}}">
                                     <button class="btn btn-primary" type="button">
                                         <i class="glyphicon glyphicon-thumbs-up"></i>
                                             <span class="badge">{{ news.news_liked }}</span>

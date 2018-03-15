@@ -13,10 +13,10 @@ urlpatterns = [
     re_path('^delete/(?:(\d+)/)?$', views.delete_news.as_view(), name='delete_news'),
     re_path('^ria/index$', views.ria_list_Views.as_view(), name='ria_index'),
     re_path('^login/$', views.LoginView.as_view(), name='login'),
-    #re_path('^logout/$', auth_views.logout,{'template_name' : 'registration/logout.html',
-     #                                       'next_page': '/'} , name='logout'),
     re_path('^logout/$', views.LogoutView.as_view(), name='logout'),
     re_path('^register/$', views.RegisterView.as_view(), name='register'),
+    re_path('^profile(?:(?P<id>\d+)/)?$', views.edit_profile, name='edit_profile'),
+    re_path('^users/$', views.users, name='user'),
     re_path('^(?:(?P<category>\w+)/)?$', views.index_list_Views.as_view(), name='index'),
 
     #'django.contrib.auth.views.login',{"template_name" : "login.html","extra_context":{'category':Newsbase.category}},name='login' )

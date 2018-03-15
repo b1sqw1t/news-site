@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Newsbase(models.Model):
@@ -96,3 +97,14 @@ class Testbase(models.Model):
     news_views = models.IntegerField(verbose_name='Просмотры', default=0)
     def __str__(self):
         return '%s %s %s' %(self.title,self.text,self.datetime)
+
+
+class Profile(models.Model):
+    class Meta:
+        verbose_name = 'Дополнительная информация профиля'
+    user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,unique=True,verbose_name='Пользователь')
+    first_name = models.CharField(max_length=30,verbose_name='Имя')
+    last_name = models.CharField(max_length=30,verbose_name='Фамилия')
+    country = models.CharField(max_length=50,verbose_name='Страна')
+    my_city = models.CharField(max_length=50,verbose_name='Город')
+    age = models.IntegerField(default=0,verbose_name='Возраст')
