@@ -1,15 +1,15 @@
-from django.shortcuts import render_to_response, redirect,get_object_or_404
-from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.views.generic.list import ListView
-from django.views.generic.base import ContextMixin, TemplateView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
-from django.contrib import messages
+from django.shortcuts               import render_to_response, redirect,get_object_or_404
+from django.contrib                 import messages
+from django.contrib.auth            import authenticate,login,logout
+from django.contrib.auth.forms      import UserCreationForm
+from django.views.generic.list      import ListView
+from django.views.generic.base      import ContextMixin, TemplateView
+from django.views.generic.detail    import DetailView
+from django.views.generic.edit      import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
 
-from news.forms import NewsForm, LoginForm, RegisterForm
-from news.models import Newsbase, Testbase, Profile
+from news.forms                     import NewsForm, LoginForm, RegisterForm,ProfileForm
+from news.models                    import Newsbase, Testbase, Profile
+from django.contrib.auth.models     import User
 
 class category_list(ContextMixin):
     def get_context_data(self, **kwargs):
@@ -305,15 +305,18 @@ class LoginView(TemplateView,category_list):
 
 class RegisterView(TemplateView,category_list,UserCreationForm):
     form = None
+    profile_form = None
     template_name = 'registration/register.html'
 
     def get(self,request,*args,**kwargs):
         self.form = UserCreationForm
+        self.profile_form = ProfileForm
         return super(RegisterView,self).get(request,*args,**kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(RegisterView,self).get_context_data(**kwargs)
         context['form'] = self.form
+        context['profile_form'] = self.profile_form
 
         return context
 
@@ -338,12 +341,15 @@ class LogoutView(TemplateView):
         return redirect('/')
 
 
-def edit_profile(request,id):
+def edit_profile(request,man):
     category = Newsbase.category
-    all_users = User.objects.all()
-    user = Profile.objects.filter(user=id)
-    print('РАБОТАЕТ')
-    return render_to_response('registration/edit_profile.html',locals())
+    man = request.GET['man']
+    try:
+        ola = User.objects.get(pk=man)
+    except:
+        pass
+    return render_to_response('registration/edit_profile.html',{'ola':ola,
+                                                                'category' : category})
 
 def users(request):
     category = Newsbase.category

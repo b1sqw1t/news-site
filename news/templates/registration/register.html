@@ -31,10 +31,13 @@
                     </tr>
                 {% endfor %}
                 </table>
+                <table>{{ profile_form.as_p }}</table>
                 <button type="submit" class="btn btn-primary navbar-btn" >Зарегистрироваться</button>
                 <input type="hidden" name="next" value="{{next}}">
             </form>
                     </div>
     </div>
 </center>
+
+
 {% endblock %}

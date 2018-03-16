@@ -1,10 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import User
+from django.db                      import models
+from django.contrib.auth.models     import User
+from django.db.models.signals       import post_save
+from django.dispatch                import receiver
 
 
 class Newsbase(models.Model):
+
     class Meta:
         verbose_name = 'Новости'
+
     authors = (
         ('Mamaev_Oleg','Мамаев Олег'),
         ('Maksimova_Marina','Максимова Марина'),
@@ -22,6 +26,7 @@ class Newsbase(models.Model):
         ('tech', 'Технологии'),
         ('science', 'Наука'),
     )
+
     news_title = models.CharField(max_length=250,verbose_name='Заголовок',unique=True)
     news_date = models.DateTimeField(auto_now_add=True,verbose_name='Дата и время публикации')
     news_text = models.TextField(verbose_name='Текст статьи',unique=True)
@@ -37,6 +42,7 @@ class Newsbase(models.Model):
 
     def __str__(self):
         return 'Статья:%s, Категория: %s,  Автор: %s' %(self.news_title, self.news_category,self.news_authors)
+
     def __unicode__(self):
         return self.news_authors
 
@@ -87,24 +93,43 @@ class Newsbase(models.Model):
 
 
 class Testbase(models.Model):
+
     class Meta:
         verbose_name = 'Тест риа новости'
+
     title = models.CharField(max_length=300,verbose_name='Заголовок',unique=True)
     datetime = models.DateTimeField(auto_now_add=True,verbose_name='Дата публикации')
     text = models.TextField(verbose_name='Статья')
     image = models.URLField(verbose_name='Ссылка на изображение',default='http://ria.ru')
     cop_url = models.URLField(verbose_name='Ссылка на статью РИА',default='http://ria.ru')
     news_views = models.IntegerField(verbose_name='Просмотры', default=0)
+
     def __str__(self):
         return '%s %s %s' %(self.title,self.text,self.datetime)
 
 
 class Profile(models.Model):
+
     class Meta:
         verbose_name = 'Дополнительная информация профиля'
+
     user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,unique=True,verbose_name='Пользователь')
     first_name = models.CharField(max_length=30,verbose_name='Имя')
     last_name = models.CharField(max_length=30,verbose_name='Фамилия')
     country = models.CharField(max_length=50,verbose_name='Страна')
     my_city = models.CharField(max_length=50,verbose_name='Город')
     age = models.IntegerField(default=0,verbose_name='Возраст')
+
+    def __str__(self):
+        return '%s %s %s %s %s %s' %(self.user,self.first_name,self.last_name,self.country,self.my_city,self.age)
+
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

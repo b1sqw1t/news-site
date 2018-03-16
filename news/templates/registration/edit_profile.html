@@ -1,9 +1,8 @@
 {% extends 'base/main.html' %}
 {% block text %}
-    {% for name in all_users %}
-        <p>{{ name.get_full_name }} {{ name.id }}</p>
-    {% endfor %}
-    {% for field in user %}
-        {{ field }}
-    {% endfor %}
+{% if  ola  %}
+    {{ ola.profile }}
+{% else %}
+<p>НИЧЕГО НЕ НАЙДЕНО</p>
+{% endif %}
 {% endblock %}

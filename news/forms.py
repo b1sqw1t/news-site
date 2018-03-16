@@ -1,6 +1,6 @@
-from django import forms
-from django.contrib.auth.models import User
-from news.models import Newsbase
+from django                         import forms
+from django.contrib.auth.models     import User
+from news.models                    import Newsbase,Profile
 
 choice = Newsbase.category
 
@@ -33,3 +33,7 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('first_name', 'last_name', 'country','my_city','age')
