@@ -7,7 +7,8 @@ from django.dispatch                import receiver
 class Newsbase(models.Model):
 
     class Meta:
-        verbose_name = 'Новости'
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
 
     authors = (
         ('Mamaev_Oleg','Мамаев Олег'),
@@ -112,6 +113,7 @@ class Profile(models.Model):
 
     class Meta:
         verbose_name = 'Дополнительная информация профиля'
+        verbose_name_plural = 'Дополнительная информация профилей'
 
     user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,unique=True,verbose_name='Пользователь')
     first_name = models.CharField(max_length=30,verbose_name='Имя')
@@ -123,7 +125,8 @@ class Profile(models.Model):
     def __str__(self):
         return '%s %s %s %s %s %s' %(self.user,self.first_name,self.last_name,self.country,self.my_city,self.age)
 
-
+    def get_full_name(self):
+        return '%s %s' %(self.first_name, self.last_name)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

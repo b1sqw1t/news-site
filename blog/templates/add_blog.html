@@ -1,0 +1,20 @@
+{% extends 'base/blog_main.html' %}
+{% block title %}
+    Добавить БЛОГ
+{% endblock %}
+
+{% block index %}
+<center>
+    <p><center>Проверка</center></p>
+    {% if  forms  %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in forms %}
+            <p>{{ field.label }}</p>
+            <p>{{ field }}</p>
+        {% endfor %}
+        <input type="submit" value="Добавить">
+    </form>
+    {% endif %}
+    </center>
+{% endblock %}

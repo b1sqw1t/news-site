@@ -1,0 +1,23 @@
+{% extends 'base/blog_main.html' %}
+{% block title %}
+    Редактировать БЛОГ
+{% endblock %}
+
+{% block index %}
+    <center>
+        {% if  message  %}
+            {{ message }}
+        {% endif %}
+        <p><center>Проверка</center></p>
+        {% if  forms  %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for field in forms %}
+                    <p>{{ field.label }}</p>
+                    <p>{{ field }}</p>
+                {% endfor %}
+                <input type="submit" value="Редактировать">
+            </form>
+        {% endif %}
+    </center>
+{% endblock %}

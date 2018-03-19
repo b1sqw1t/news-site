@@ -1,0 +1,21 @@
+{% extends 'base/blog_main.html' %}
+{% load static %}
+{% block index %}
+<p>Привет {{ request.user.profile.get_full_name }}</p>
+<a href="{% url 'add_blog' %}">Добавить БЛОГ</a>
+<hr>
+{% endblock %}
+
+{% block center %}
+    {% if  blog_objects  %}
+        {% for field in blog_objects %}
+            <p><h3>{{ field.Title }}</h3></p>
+            <strong><i>Автор: {{ field.get_name }}, {{ field.Datetime|date:"d.m.Y  H:m" }}</i></strong>
+
+            <p>{{ field.Text}}</p>
+            <a href="{% url 'edit_blog' field.id%}">Редактировать</a>
+<br>
+
+        {% endfor %}
+    {% endif %}
+{% endblock %}
