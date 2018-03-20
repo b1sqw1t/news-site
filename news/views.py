@@ -7,7 +7,7 @@ from django.views.generic.base      import ContextMixin, TemplateView
 from django.views.generic.detail    import DetailView
 from django.views.generic.edit      import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
 
-from news.forms                     import NewsForm, LoginForm, RegisterForm,ProfileForm
+from news.forms                     import NewsForm, LoginForm,ProfileForm,UserForm
 from news.models                    import Newsbase, Testbase, Profile
 from django.contrib.auth.models     import User
 
@@ -305,19 +305,16 @@ class LoginView(TemplateView,category_list):
 
 class RegisterView(TemplateView,category_list,UserCreationForm):
     form = None
-    profile_form = None
     template_name = 'registration/register.html'
 
     def get(self,request,*args,**kwargs):
         self.form = UserCreationForm
-        self.profile_form = ProfileForm
+
         return super(RegisterView,self).get(request,*args,**kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(RegisterView,self).get_context_data(**kwargs)
         context['form'] = self.form
-        context['profile_form'] = self.profile_form
-
         return context
 
     def post(self,request,*args,**kwargs):
@@ -329,10 +326,35 @@ class RegisterView(TemplateView,category_list,UserCreationForm):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('/')
+                    return redirect('register_step2')
             return redirect('login')
         else:
             return super(RegisterView, self).get(request, *args, **kwargs)
+
+class Step2(TemplateView,category_list):
+    template_name = 'registration/steptwo.html'
+    form = None
+
+    def get(self,request,*args,**kwargs):
+        try:
+            self.form = ProfileForm(instance=Profile.objects.get(pk=self.request.user.id))
+        except:
+            self.form = ProfileForm()
+            print('ОШИБКА.ПОЛЬЗОВАТЕЛЬ НЕ НАЙДЕН')
+        return super(Step2,self).get(request,*args,**kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(Step2,self).get_context_data(**kwargs)
+        context['form'] = self.form
+        return context
+
+    def post(self,request,*args,**kwargs):
+        self.form = Profile.objects.get(pk=self.request.user.id)
+        self.form = ProfileForm(request.POST,instance=self.form)
+        if self.form.is_valid():
+            self.form.save()
+        return super(Step2,self).get(request,*args,**kwargs)
+
 
 class LogoutView(TemplateView):
     template_name = 'registration/logout.html'

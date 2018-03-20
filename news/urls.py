@@ -15,6 +15,7 @@ urlpatterns = [
     re_path('^delete/(?:(\d+)/)?$',         views.delete_news.as_view(),            name='delete_news'),
     re_path('^ria/index$',                  views.ria_list_Views.as_view(),         name='ria_index'),
     re_path('^register/$',                  views.RegisterView.as_view(),           name='register'),
+    re_path('^register/next_step/$',        views.Step2.as_view(),                  name='register_step2'),
     re_path('^profile(?:(?P<man>\d+)/)?$',  views.edit_profile,                     name='edit_profile'),
     re_path('^users/$',                     views.users,                            name='users'),
     re_path('^(?:(?P<category>\w+)/)?$',    views.index_list_Views.as_view(),       name='index'),

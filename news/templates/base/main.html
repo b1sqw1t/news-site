@@ -74,8 +74,11 @@
 
             <div>
                 {% if user.is_authenticated %}
-
-                    <p>{{ user.get_full_name }} / <a href="{% url 'logout' %}">Выйти</a> </p>
+                    {% if  user.profile.get_full_name > "1"  %}
+                        <p>{{ user.profile.get_full_name }} / <a href="{% url 'logout' %}">Выйти</a> </p>
+                    {% else %}
+                        <p>{{ user }} / <a href="{% url 'logout' %}">Выйти</a></p>
+                    {% endif %}
                 {% else %}
                 <table>
                     <tr>

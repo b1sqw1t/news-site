@@ -116,11 +116,11 @@ class Profile(models.Model):
         verbose_name_plural = 'Дополнительная информация профилей'
 
     user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,unique=True,verbose_name='Пользователь')
-    first_name = models.CharField(max_length=30,verbose_name='Имя')
-    last_name = models.CharField(max_length=30,verbose_name='Фамилия')
-    country = models.CharField(max_length=50,verbose_name='Страна')
-    my_city = models.CharField(max_length=50,verbose_name='Город')
-    age = models.IntegerField(default=0,verbose_name='Возраст')
+    first_name = models.CharField(max_length=30,verbose_name='Имя',blank=True)
+    last_name = models.CharField(max_length=30,verbose_name='Фамилия',blank=True)
+    country = models.CharField(max_length=50,verbose_name='Страна',blank=True)
+    my_city = models.CharField(max_length=50,verbose_name='Город',blank=True)
+    age = models.IntegerField(default=0,verbose_name='Возраст',blank=True)
 
     def __str__(self):
         return '%s %s %s %s %s %s' %(self.user,self.first_name,self.last_name,self.country,self.my_city,self.age)

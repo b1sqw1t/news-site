@@ -27,11 +27,12 @@
                 {% for field in form %}
                     <tr>
                         <td><h4><b>{{ field.label }}</b></h4> </td>
-                        <td><p><h3>{{ field }}</h3></p> </td>
+                        <td><p><h3>{{ field }}</h3></p>
+                                <p>{{ field.errors }}</p></td>
                     </tr>
                 {% endfor %}
                 </table>
-                <table>{{ profile_form.as_p }}</table>
+
                 <button type="submit" class="btn btn-primary navbar-btn" >Зарегистрироваться</button>
                 <input type="hidden" name="next" value="{{next}}">
             </form>
