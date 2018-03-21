@@ -22,7 +22,7 @@ from news import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('^blog/', include('blog.urls')),
-    re_path('^login/$', views.LoginView.as_view(), name='login'),
+    re_path('login/', views.LoginView.as_view(), name='login'),
     re_path('^logout/$', views.LogoutView.as_view(), name='logout'),
     path('', include('news.urls')),
 ]

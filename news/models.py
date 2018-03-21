@@ -121,12 +121,28 @@ class Profile(models.Model):
     country = models.CharField(max_length=50,verbose_name='Страна',blank=True)
     my_city = models.CharField(max_length=50,verbose_name='Город',blank=True)
     age = models.IntegerField(default=0,verbose_name='Возраст',blank=True)
+    avatar = models.ImageField(upload_to='profile/pic', verbose_name='Изображение',blank=True)
 
     def __str__(self):
         return '%s %s %s %s %s %s' %(self.user,self.first_name,self.last_name,self.country,self.my_city,self.age)
 
     def get_full_name(self):
         return '%s %s' %(self.first_name, self.last_name)
+
+    def save(self,*args,**kwargs):
+        try:
+            this_record = Profile.objects.get(pk=self.user)
+            if this_record.avatar != self.avatar:
+                this_record.avatar.delete(save=False)
+        except:
+            pass
+        super(Profile, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.avatar.delete(save=False)
+        super(Profile, self).delete(*args, **kwargs)
+
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

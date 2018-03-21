@@ -77,7 +77,20 @@
                         &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
                         {{ news_post.news_date|date:"H:i" }} &nbsp&nbsp
                         {{ news_post.news_date|date:"d.m.Y" }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
-                        <a href="{% url "like" %}?post={{ news_post.id }}&news=True"><i class="glyphicon glyphicon-thumbs-up"></i></a> {{ news_post.news_liked }} &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
+
+                        {% if user.is_authenticated %}
+                                    <a href="{% url 'like' %}?post={{ news_post.id }}&home={{ request.get_full_path }}&id={{news_post.id}}">
+
+                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                        <span>{{ news_post.news_liked }}</span>
+                                    </a>
+                                {% else %}
+
+                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                            <span >{{ news_post.news_liked }}</span>
+
+                                {% endif %}
+                        &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
                         Просмотров : {{news_post.news_views}}</div>
                 </div>
             <br>

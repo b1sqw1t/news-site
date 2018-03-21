@@ -11,11 +11,12 @@ from news.forms                     import NewsForm, LoginForm,ProfileForm,UserF
 from news.models                    import Newsbase, Testbase, Profile
 from django.contrib.auth.models     import User
 
-class category_list(ContextMixin):
+class category_list(ContextMixin,LoginForm):
     def get_context_data(self, **kwargs):
         context = super(category_list,self).get_context_data(**kwargs)
         context['category'] = Newsbase.category
         context['authors'] = Newsbase.authors
+        context['login_form'] = LoginForm()
         return context
 
 

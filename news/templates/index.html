@@ -97,7 +97,7 @@
                             <div class="col-md-1">
                                 <!-- ЛАЙКИ LIKED-->
                                 {% if user.is_authenticated %}
-                                <a href="{% url 'like' %}?post={{ news.id }}&home={{ request.get_full_path }}&id={{news.id}}">
+                                    <a href="{% url 'like' %}?post={{ news.id }}&home={{ request.get_full_path }}&id={{news.id}}">
                                     <button class="btn btn-primary" type="button">
                                         <i class="glyphicon glyphicon-thumbs-up"></i>
                                             <span class="badge">{{ news.news_liked }}</span>
