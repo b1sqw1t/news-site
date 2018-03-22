@@ -1,4 +1,5 @@
 {% extends 'base/main.html' %}
+
 {% block title %}
     СПИСОК ПОЛЬЗОВАТЕЛЕЙ
 {% endblock %}
@@ -15,7 +16,7 @@
 {% block text %}
     {% for name in user_objects %}
 
-        <p><a href="{% url 'edit_profile'%}?man={{name.id}}">{{ name }}</a> </p>
+        <p><h2><a href="{% url 'show_profile'%}?man={{name.id}}">{{ name }}</a></h2> </p>
 
     {% endfor %}
 {% endblock %}

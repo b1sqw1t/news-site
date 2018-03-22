@@ -1,4 +1,4 @@
-from django.shortcuts               import render_to_response, redirect,get_object_or_404
+from django.shortcuts               import render_to_response, redirect,get_object_or_404,render
 from django.contrib                 import messages
 from django.contrib.auth            import authenticate,login,logout
 from django.contrib.auth.forms      import UserCreationForm
@@ -335,6 +335,8 @@ class RegisterView(TemplateView,category_list,UserCreationForm):
 class Step2(TemplateView,category_list):
     template_name = 'registration/steptwo.html'
     form = None
+    button = 'Сохранить'
+    title = 'Редактирование данных пользователя'
 
     def get(self,request,*args,**kwargs):
         try:
@@ -342,16 +344,19 @@ class Step2(TemplateView,category_list):
         except:
             self.form = ProfileForm()
             print('ОШИБКА.ПОЛЬЗОВАТЕЛЬ НЕ НАЙДЕН')
+
         return super(Step2,self).get(request,*args,**kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(Step2,self).get_context_data(**kwargs)
         context['form'] = self.form
+        context['button_text'] = self.button
+        context['title'] = self.title
         return context
 
     def post(self,request,*args,**kwargs):
         self.form = Profile.objects.get(pk=self.request.user.id)
-        self.form = ProfileForm(request.POST,instance=self.form)
+        self.form = ProfileForm(request.POST,request.FILES,instance=self.form)
         if self.form.is_valid():
             self.form.save()
         return super(Step2,self).get(request,*args,**kwargs)
@@ -364,18 +369,21 @@ class LogoutView(TemplateView):
         return redirect('/')
 
 
-def edit_profile(request,man):
+def show_profile(request,man):
     category = Newsbase.category
     man = request.GET['man']
     try:
-        ola = User.objects.get(pk=man)
+        user_object = User.objects.get(pk=man)
+        title = 'Профиль пользователя %s' % user_object
     except:
         pass
-    return render_to_response('registration/edit_profile.html',{'ola':ola,
-                                                                'category' : category})
+    return render(request,'registration/show_profile.html',{'user_object':user_object,
+                                                                'category' : category,'man':man,'title':title})
 
 def users(request):
     category = Newsbase.category
     user_objects = User.objects.all()
-    return render_to_response('registration/users.html',locals())
+    return render(request,'registration/users.html',locals())
 
+def proverkra(request):
+    return render(request,'test.html')

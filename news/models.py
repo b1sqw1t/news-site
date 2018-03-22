@@ -131,6 +131,7 @@ class Profile(models.Model):
 
     def save(self,*args,**kwargs):
         try:
+            print('WORK')
             this_record = Profile.objects.get(pk=self.user)
             if this_record.avatar != self.avatar:
                 this_record.avatar.delete(save=False)

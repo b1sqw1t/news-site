@@ -3,7 +3,7 @@
 {% if  pols  %}
     {{ pols }}
 {% endif %}
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <table class="table">
                     {% for field in form %}
@@ -13,7 +13,13 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <button type="submit" class="btn btn-primary navbar-btn" >Зарегистрироваться</button>
+                <button type="submit" class="btn btn-primary navbar-btn" >
+                    {% if  button_text  %}
+                        {{ button_text }}
+                    {% else %}
+                    ЗАРЕГИСТРИРОВАТЬСЯ
+                    {% endif %}
+                </button>
                 <input type="hidden" name="next" value="{{next}}">
             </form>
 {% endblock %}
