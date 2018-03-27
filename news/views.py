@@ -7,8 +7,8 @@ from django.views.generic.base      import ContextMixin, TemplateView
 from django.views.generic.detail    import DetailView
 from django.views.generic.edit      import CreateView,UpdateView,DeleteView,ProcessFormView, FormView
 
-from news.forms                     import NewsForm, LoginForm,ProfileForm,UserForm
-from news.models                    import Newsbase, Testbase, Profile
+from news.forms                     import NewsForm, LoginForm,ProfileForm,UserForm,CommentForm
+from news.models                    import Newsbase, Testbase, Profile, Comments
 from django.contrib.auth.models     import User
 
 class category_list(ContextMixin,LoginForm):
@@ -82,6 +82,7 @@ class post_Views(DetailView,category_list):
     template_name = 'view.html'
     pk_url_kwarg = 'post'
     context_object_name = 'news_post'
+    commentForm = None
 
     def get(self,request,*args,**kwargs):
         try:
@@ -89,6 +90,8 @@ class post_Views(DetailView,category_list):
         except:
             self.post = 1
         self.view = get_object_or_404(Newsbase,pk=self.post)
+        self.commentForm = CommentForm(initial={'comment_news' : self.view,'comment_author': request.user})
+        self.comments = Comments.objects.filter(comment_news=self.post)
         self.view.news_views += 1
         self.view.save()
         self.authors = Newsbase.authors
@@ -98,7 +101,26 @@ class post_Views(DetailView,category_list):
     def get_context_data(self, **kwargs):
         context = super(post_Views,self).get_context_data(**kwargs)
         context['authors'] = self.authors
+        context['commentForm'] = self.commentForm
+        context['comments'] = Comments.objects.filter(comment_news=self.post)
         return context
+
+    def post(self,request,*args,**kwargs):
+        self.authors = Newsbase.authors
+        try:
+            self.post = self.request.GET['post']
+        except:
+            self.post = 1
+        self.commentForm = CommentForm(request.POST)
+        self.new_comment = self.commentForm.save(commit=False)
+        self.new_comment.comment_text = request.POST['comment_text']
+        self.new_comment.comment_news = Newsbase.objects.get(pk=self.post)
+        self.new_comment.comment_author = request.user
+        self.new_comment.save()
+        self.commentForm.save_m2m()
+        return redirect('/post?post='+self.post)
+        return super(post_Views,self).get(request,*args,**kwargs)
+
 
     def get_object(self):
         return get_object_or_404(Newsbase,pk=self.post)

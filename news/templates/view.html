@@ -93,6 +93,35 @@
                         &nbsp&nbsp&nbsp &nbsp|&nbsp&nbsp&nbsp&nbsp
                         Просмотров : {{news_post.news_views}}</div>
                 </div>
-            <br>
+            <br><br>
+<div class="viewComment">
+    {% if  comments  %}
+            {% for comment in comments %}
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ comment.comment_author }}</div>
+                            <div class="panel-body">{{ comment.comment_text }}</div>
+                        </div>
+
+            {% endfor %}
+
+    {% else %}
+        <p>Комментарий нет</p>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div class="add_Comments">
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in commentForm %}
+            <p>{{ field.label }}</p>
+            <p>{{ field }} </p>
+        {% endfor %}
+        <input type="submit" value="Отправить">
+    </form>
+</div>
+{% endif %}
+
 
 {% endblock %}

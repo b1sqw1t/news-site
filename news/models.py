@@ -153,3 +153,18 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+class Comments(models.Model):
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    comment_text = models.CharField(max_length=300,verbose_name='Комментарий')
+    comment_news = models.ForeignKey(Newsbase,on_delete=models.CASCADE,verbose_name='Пост комментария')
+    comment_author = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='Автор комментария')
+
+
+
+    def __str__(self):
+        return '%s %s' %(self.comment_author,self.comment_text)
