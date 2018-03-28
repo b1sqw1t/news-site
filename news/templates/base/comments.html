@@ -1,0 +1,39 @@
+<div class="viewComment">
+    {% if  comments  %}
+            {% for comment in comments %}
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            {{ comment.comment_author }}
+                                        </div>
+                                        {% if  comment.comment_author == user  %}
+                                        <div class="col-md-1">Удалить</div>
+
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">{{ comment.comment_text }}</div>
+                        </div>
+
+            {% endfor %}
+
+    {% else %}
+        <p>Комментарий нет</p>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<div class="add_Comments">
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in commentForm %}
+            <p>{{ field.label }}</p>
+            <p>{{ field }} </p>
+        {% endfor %}
+        <input type="submit" value="Отправить">
+    </form>
+    {% endif %}
+</div>

@@ -17,6 +17,7 @@ class category_list(ContextMixin,LoginForm):
         context['category'] = Newsbase.category
         context['authors'] = Newsbase.authors
         context['login_form'] = LoginForm()
+        context['top5'] = Newsbase.objects.order_by('-news_liked')[0:5]
         return context
 
 
@@ -384,7 +385,7 @@ class Step2(TemplateView,category_list):
         return super(Step2,self).get(request,*args,**kwargs)
 
 
-class LogoutView(TemplateView):
+class LogoutView(TemplateView,category_list):
     template_name = 'registration/logout.html'
     def get(self,request,*args,**kwargs):
         logout(request)
@@ -394,13 +395,17 @@ class LogoutView(TemplateView):
 def show_profile(request,man):
     category = Newsbase.category
     man = request.GET['man']
+    top5 = Newsbase.objects.order_by('-news_liked')[0:5]
     try:
         user_object = User.objects.get(pk=man)
         title = 'Профиль пользователя %s' % user_object
     except:
         pass
-    return render(request,'registration/show_profile.html',{'user_object':user_object,
-                                                                'category' : category,'man':man,'title':title})
+    return render(request,'registration/show_profile.html',{'user_object'   : user_object,
+                                                            'category'      : category,
+                                                            'man'           : man,
+                                                            'title'         : title,
+                                                            'top5'          : top5})
 
 def users(request):
     category = Newsbase.category
