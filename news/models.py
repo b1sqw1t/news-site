@@ -44,6 +44,10 @@ class Newsbase(models.Model):
     def __str__(self):
         return 'Статья:%s, Категория: %s,  Автор: %s' %(self.news_title, self.news_category,self.news_authors)
 
+    def count_comments(self):
+        comm = Comments.objects.filter(comment_news=self.id)
+        return comm.count()
+
     def __unicode__(self):
         return self.news_authors
 

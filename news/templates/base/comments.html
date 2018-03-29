@@ -1,22 +1,27 @@
-<div class="viewComment">
+<div class="viewComment" id="viewComment">
     {% if  comments  %}
             {% for comment in comments %}
-
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            {{ comment.comment_author }}
+                                            <h4>{{ comment.comment_author }}</h4>
                                         </div>
                                         {% if  comment.comment_author == user  %}
-                                        <div class="col-md-1">Удалить</div>
+                                        <button type="button" class="btn btn-default">
+                                                <a href="{% url 'delete_comments' %}{{comment.id}}/{{news_post.id}}"><i class="glyphicon glyphicon-trash"></i></a>
+                                            </button>
+
 
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-body">{{ comment.comment_text }}</div>
+                            <div class="panel-body">
+                                {{ comment.comment_text }}
+
+                            </div>
                         </div>
 
             {% endfor %}
@@ -30,8 +35,10 @@
     <form action="" method="post">
         {% csrf_token %}
         {% for field in commentForm %}
-            <p>{{ field.label }}</p>
-            <p>{{ field }} </p>
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" placeholder="{{ field.label }}" aria-describedby="sizing-addon1" {{ field }}
+        </div>
+
         {% endfor %}
         <input type="submit" value="Отправить">
     </form>

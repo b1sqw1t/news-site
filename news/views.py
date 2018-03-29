@@ -414,3 +414,15 @@ def users(request):
 
 def proverkra(request):
     return render(request,'test.html')
+
+class delete_comments(TemplateView):
+
+    def get(self,request,*args,**kwargs):
+        try:
+            comment_id = self.args[0]
+            ahref = self.args[1]
+            comment = get_object_or_404(Comments,pk=comment_id)
+            comment.delete()
+            return redirect('/post?post=%s#viewComment' %ahref)
+        except:
+            return redirect('/')

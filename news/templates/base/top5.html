@@ -4,14 +4,13 @@
             Самые популярные новости
         </p>
         <tr>
-            <td>№</td>
             <td>Liked</td>
             <td>NEWS</td>
         </tr>
         {% for news in top5 %}
 
         <tr>
-            <td>{{ forloop.counter }}</td>
+
             <td>{{ news.news_liked }}</td>
             <td><a href="{% url 'post' %}?post={{news.id}}">{{ news.news_title }}</a></td>
         </tr>

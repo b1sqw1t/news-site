@@ -20,5 +20,6 @@ urlpatterns = [
     re_path('^users/$',                     views.users,                            name='users'),
     re_path('^proverkra/$',                 views.proverkra,                        name='proverkra'),
     re_path('^(?:(?P<category>\w+)/)?$',    views.index_list_Views.as_view(),       name='index'),
+    re_path('^d_c/(?:(\d+)/)?(?:(\d+)/)?$', views.delete_comments.as_view(),        name='delete_comments')
 
 ]
